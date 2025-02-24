@@ -12,7 +12,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id?:
     const data = JSON.parse(fileContents);
 
     const response = NextResponse.json(data);
-    response.headers.set('Cache-Control', 'public, max-age=31536000, immutable'); // Cache for 1 year
+    response.headers.set('Cache-Control', 'public, max-age=31536000, immutable'); 
 
     return response;
   } else {

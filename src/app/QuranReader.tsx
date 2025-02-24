@@ -11,10 +11,13 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { PlayCircle, PauseCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Surah, Translation, Verse } from "@/types/quran";
 import { qariOptions } from "@/types/qariOptions";
 import { ModeToggle } from "@/components/ModeToggle";
@@ -27,10 +30,9 @@ const EnhancedQuranReader = () => {
   const [verses, setVerses] = useState<Verse | null>(null);
   const [translation, setTranslation] = useState<Translation | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [fontSize, setFontSize] = useState<number>(24);
+
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
+ 
   const [showSideNav, setShowSideNav] = useState<boolean>(false);
   const [qari, setQari] = useState<string>("ar.alafasy");
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -125,33 +127,69 @@ const EnhancedQuranReader = () => {
     return Math.ceil(filteredVerses.length / versesPerPage);
   }, [filteredVerses.length, versesPerPage]);
 
-  const playAudio = useCallback(
-    (src: string) => {
-      if (currentAudio) currentAudio.pause();
-      try {
-        const audio = new Audio(src);
-        audio.play();
-        setCurrentAudio(audio);
-        setIsPlaying(true);
-        audio.onended = () => setIsPlaying(false);
-      } catch {
-        console.error("Error playing audio");
-      }
-    },
-    [currentAudio]
-  );
 
-  const toggleAudio = useCallback(
-    (src: string) => {
-      if (currentAudio && isPlaying) {
-        currentAudio.pause();
-        setIsPlaying(false);
-      } else {
-        playAudio(src);
-      }
-    },
-    [currentAudio, isPlaying, playAudio]
-  );
+
+  const AyahNumber = ({ number }: { number: number }) => {
+    const arabicNumbers = new Intl.NumberFormat("ar-EG").format(number);
+
+    return (
+      <span
+        data-font-scale="3"
+        data-font="code_v1"
+        className="GlyphWord_styledWord"
+        style={{
+          fontFamily: "p1-v1",
+          display: "inline-flex",
+          alignItems: "center",
+        }}
+      >
+        {String.fromCharCode(0x06dd)}
+        {arabicNumbers}
+      </span>
+    );
+  };
+
+  const SurahView = ({
+    paginatedVerses,
+  }: {
+    paginatedVerses: [string, string][];
+  }) => {
+    return (
+      <div className="flex justify-center">
+        <div className="max-w-3xl w-full">
+          <p
+            className="leading-relaxed arabic-text text-center"
+            style={{
+              fontSize: `32px`,
+              lineHeight: "3rem",
+              direction: "rtl",
+              wordSpacing: "0.2rem",
+              fontFamily: "Warsh, 'Noto Naskh Arabic', serif",
+              padding: "2rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            {paginatedVerses.map(([key, verse],) => (
+              <span
+                key={key}
+                className="block mb-6 text-center w-full"
+                style={{
+                  position: "relative",
+                }}
+              >
+                {verse}
+                <span className="ayah-number mx-1 inline-block">
+                  <AyahNumber number={parseInt(key.split("_")[1])} />
+                </span>
+              </span>
+            ))}
+          </p>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -164,7 +202,9 @@ const EnhancedQuranReader = () => {
                   <Button
                     key={surah.index}
                     variant={
-                      currentSurah?.index === surah.index ? "secondary" : "ghost"
+                      currentSurah?.index === surah.index
+                        ? "secondary"
+                        : "ghost"
                     }
                     className="w-full justify-start"
                     onClick={() => handleSurahChange(surah.index)}
@@ -184,6 +224,14 @@ const EnhancedQuranReader = () => {
         >
           {showSideNav ? <ChevronRight /> : <ChevronLeft />}
         </Button>
+
+        <Button
+    variant="outline"
+    onClick={() => window.location.href = '/thumn-selector'}
+    className="whitespace-nowrap"
+  >
+    اختيار الأثمان
+  </Button>
         <div className={`${showSideNav ? "w-3/4 hidden" : "w-full"} flex-grow`}>
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-2xl font-bold">قارئ القرآن الكريم</h1>
@@ -210,17 +258,7 @@ const EnhancedQuranReader = () => {
               </SelectContent>
             </Select>
           </div>
-          <div className="flex items-center gap-4 mb-4">
-            <span>حجم الخط:</span>
-            <Slider
-              min={12}
-              max={32}
-              step={1}
-              value={[fontSize]}
-              onValueChange={(value) => setFontSize(value[0])}
-              aria-label="Font size"
-            />
-          </div>
+
           {isLoading ? (
             <div className="flex justify-center items-center h-64">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -229,57 +267,31 @@ const EnhancedQuranReader = () => {
           ) : currentSurah && verses && translation ? (
             <Card>
               <CardHeader>
-                <CardTitle>
-                  <h2 className="flex items-center gap-4">
-                    {currentSurah.title} ({currentSurah.titleAr})
-                    <Button
-                      variant="default"
-                      onClick={() =>
-                        toggleAudio(
-                          `https://cdn.islamic.network/quran/audio-surah/128/${qari}/${currentSurah.index}.mp3`
-                        )
-                      }
-                      aria-label={isPlaying ? "Pause recitation" : "Play recitation"}
+                <CardTitle className="flex flex-col items-center text-center">
+                  <h2 className="flex flex-col items-center gap-4 mb-2">
+                    <span
+                      className="text-4xl font-warsh block mb-4 relative"
+                      style={{
+                        fontFamily: "Warsh, 'Noto Naskh Arabic', serif",
+                        lineHeight: "1.8",
+                        textAlign: "center",
+                        padding: "0 2rem",
+                        position: "relative",
+                        display: "inline-block",
+                      }}
                     >
-                      {isPlaying ? <PauseCircle /> : <PlayCircle />}
-                    </Button>
+                      {currentSurah.titleAr}
+                    </span>
                   </h2>
-                  <span className="text-sm">
-                    {currentSurah.type} • {currentSurah.count} آيات
-                  </span>
+                
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <Tabs defaultValue="verses">
-                  <TabsList>
-                    <TabsTrigger value="verses">الآيات</TabsTrigger>
-                    <TabsTrigger value="info">تفاصيل السورة</TabsTrigger>
-                  </TabsList>
                   <TabsContent value="verses">
-                    {paginatedVerses.map(([key, verse]) => (
-                      <div key={key} className="mb-4">
-                        <p style={{ fontSize }} dir="rtl">
-                          <strong>[{key.split("_")[1]}]</strong> {verse}
-                        </p>
-                        <p
-                          className="mt-4 inline-flex p-2 text-xs italic bg-muted/50 leading-relaxed"
-                          style={{ fontSize: fontSize - 6 }}
-                        >
-                          {translation.verse[key]}
-                        </p>
-                      </div>
-                    ))}
+                    <SurahView paginatedVerses={paginatedVerses} />
+
                     <div className="flex justify-between mt-4">
-                      <Button
-                        disabled={currentPage === 1}
-                        onClick={() => setCurrentPage((p) => p - 1)}
-                        aria-label="Previous page"
-                      >
-                        السابق
-                      </Button>
-                      <span>
-                        الصفحة {currentPage} من {totalPages}
-                      </span>
                       <Button
                         disabled={currentPage === totalPages}
                         onClick={() => setCurrentPage((p) => p + 1)}
@@ -287,10 +299,22 @@ const EnhancedQuranReader = () => {
                       >
                         التالي
                       </Button>
+                      <span>
+                        الصفحة {currentPage} من {totalPages}
+                      </span>
+                      <Button
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage((p) => p - 1)}
+                        aria-label="Previous page"
+                      >
+                        السابق
+                      </Button>
                     </div>
                   </TabsContent>
                   <TabsContent value="info">
-                    <p><strong>مكان النزول:</strong> {currentSurah.place}</p>
+                    <p>
+                      <strong>مكان النزول:</strong> {currentSurah.place}
+                    </p>
                   </TabsContent>
                 </Tabs>
               </CardContent>

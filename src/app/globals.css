@@ -44,7 +44,14 @@
  
     --chart-5: 27 87% 67%;
   }
- 
+
+
+  .font-quran {
+    font-family: 'Warsh', 'Noto Naskh Arabic', serif;
+    line-height: 2.8; 
+    letter-spacing: 0.8px;
+  }
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -79,8 +86,60 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+
+  .word-spacing-fix {
+    word-spacing: 0.5rem;
+    margin: 0 0.1rem;
+  }
+  
+  .ayah-number {
+    font-size: 1.2rem;
+    color: #666;
+    font-family: 'Warsh';
+  }
+  
+ 
+  .arabic-text {
+    font-family: 'Warsh', 'Noto Naskh Arabic', serif;
+    text-align: justify;
+    text-align-last: center;
+    line-height: 2.8;
+    letter-spacing: 0;
+    font-feature-settings: "kern" 1;
+    font-kerning: normal;
+  }
+
+  .font-warsh {
+    font-feature-settings: "kern" 1;
+    font-kerning: normal;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
 }
  
+@font-face {
+  font-family: 'Warsh';
+  src: url('/fonts/Warsh.ttf') format('truetype');
+
+}
+
+@media (min-width: 768px) {
+  .arabic-text {
+    column-count: 2;
+    column-gap: 2rem;
+    column-fill: balance;
+  }
+}
+
+@media (min-width: 1024px) {
+  .arabic-text {
+    column-count: 3;
+  }
+}
+
+
 @layer base {
   * {
     @apply border-border;
