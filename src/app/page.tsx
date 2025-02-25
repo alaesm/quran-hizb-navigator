@@ -1,7 +1,5 @@
-import QuranReader from '@/app/QuranReader'
-import { QuranSection } from '@/components/QuranSection';
+import HizbSelectorPage from '@/app/HizbSelectorPage'
 import { Metadata } from 'next';
-
 
 export const metadata: Metadata = {
   title: 'منصة مسار الأثمان: اختيار عشوائي لأثمان القرآن برواية ورش عن نافع من طريق الأزرق',
@@ -23,8 +21,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main>
-      <QuranReader />
-      <QuranSection />
+      <HizbSelectorPage />
     </main>
   )
 }

@@ -116,7 +116,23 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  .surah-title {
+    font-family: "Quran Karim 114", sans-serif;
+    font-size: 28px;
+    color: #D4A017; /* ذهبي */
+    text-align: center;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  }
   
+}
+
+@font-face {
+  font-family: 'QuranKarim';
+  src: url('/fonts/quran-karim-114/Quran karim 114.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
  
 @font-face {

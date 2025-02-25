@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Cairo } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from 'next-themes';
+import HeaderWithSidebar from '@/components/ui/HeaderWithSidebar';
 
 const cairo = Cairo({ subsets: ['latin'] });
 
@@ -26,13 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
       <body className={`text-right ${cairo.className} antialiased`}>
-      <header className="bg-gradient-to-r from-emerald-600 to-emerald-900 text-white p-4 shadow-md">
-  <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between">
-    <div className="flex items-center mb-4 sm:mb-0">
-      <span className="text-lg font-semibold">منصة المسابقة القرآنية</span>
-    </div>
-  </div>
-</header>
+      
+         <HeaderWithSidebar />
+
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {children}
         </ThemeProvider>
