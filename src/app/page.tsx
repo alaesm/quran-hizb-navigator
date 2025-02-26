@@ -2,6 +2,7 @@
 import { Metadata } from 'next';
 import HizbDisplayZaky from './HizbSelectorZaky';
 import HizbRandomSelector from './HizbRandomSelector';
+import HizbRandomTest from './HizbRandomTest';
 
 export const metadata: Metadata = {
   title: 'منصة مسار الأثمان: اختيار عشوائي لأثمان القرآن برواية ورش عن نافع من طريق الأزرق',
@@ -22,9 +23,10 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main>
+    <main className=''>
        <HizbDisplayZaky hizbNumber={1}/> 
-      <HizbRandomSelector/>
+      {/* <HizbRandomSelector/> */}
+      <HizbRandomTest/>
     </main>
   )
 }

@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+.font-arabic {
+  font-family: 'Kitab', 'Amiri Quran', sans-serif;
+  line-height: 2.5rem;
+}
+.book-spread {
+  background: linear-gradient(to right, #fafafa 0%, #fff 5%);
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

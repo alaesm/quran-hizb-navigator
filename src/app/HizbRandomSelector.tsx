@@ -202,7 +202,7 @@ const handleRandomSelection = async (minHizb: number, maxHizb: number) => {
       setVerses(prevVerses => {
      
         const newVerses = response.data.verses.filter(
-          newVerse => !prevVerses.some(v => v.verse_key === newVerse.verse_key)
+          (newVerse:any) => !prevVerses.some(v => v.verse_key === newVerse.verse_key)
         );
         return [...prevVerses, ...newVerses];
       });
