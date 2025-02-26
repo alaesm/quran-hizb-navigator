@@ -1,4 +1,4 @@
-import HizbSelectorPage from '@/app/HizbSelectorPage'
+//import HizbSelectorPage from '@/app/HizbSelectorPage'
 import { Metadata } from 'next';
 import HizbDisplayZaky from './HizbSelectorZaky';
 import HizbRandomSelector from './HizbRandomSelector';
@@ -23,8 +23,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main>
-      {/* <HizbSelectorPage /> */}
-      {/* <HizbDisplayZaky hizbNumber={1}/> */}
+       <HizbDisplayZaky hizbNumber={1}/> 
       <HizbRandomSelector/>
     </main>
   )

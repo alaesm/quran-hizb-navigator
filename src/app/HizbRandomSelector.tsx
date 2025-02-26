@@ -11,6 +11,13 @@ interface Verse {
   page_number: number;
 }
 
+interface Quarter {
+  id: number;
+  hizb_number: number;
+  thumn_number: number;
+  rub_number: number;
+}
+
 interface Sura {
   id: number;
   name_arabic: string;
@@ -24,6 +31,13 @@ interface ThumnRange {
   currentPage: number;
 }
 
+interface ThumnBounds {
+  startVerse: number;
+  endVerse: number;
+  hizb: number;
+  thumn: number;
+}
+
 const HizbRandomSelector = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [thumnRange, setThumnRange] = useState<ThumnRange | null>(null);
@@ -32,7 +46,9 @@ const HizbRandomSelector = () => {
   const [randomHizb, setRandomHizb] = useState<number>(0);
   const [randomThumn, setRandomThumn] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [quarters, setQuarters] = useState<Quarter[]>([]);
+  const [quartersLoading, setQuartersLoading] = useState(true);
+  const [quartersError, setQuartersError] = useState<string | null>(null);
   const categories = [
     { name: "الحزب ١-١٠", minHizb: 1, maxHizb: 10 },
     { name: "الحزب ١١-٢٠", minHizb: 11, maxHizb: 20 },
@@ -40,65 +56,164 @@ const HizbRandomSelector = () => {
     { name: "الحزب ٤١-٦٠", minHizb: 41, maxHizb: 60 },
   ];
 
-  const getPageByVerseKey = async (verseKey: string): Promise<number> => {
-    try {
-      const response = await axios.get(
-        `https://api.quran.com/api/v4/verses/by_key/${verseKey}?fields=page_number`
-      );
-      return response.data.verse.page_number;
-    } catch (error) {
-      console.error("Error fetching page:", error);
-      return 1;
-    }
-  };
 
-  const getThumnPages = async (hizb: number, thumn: number): Promise<ThumnRange> => {
-    const thumnIndex = (hizb - 1) * 8 + (thumn - 1);
-    if (thumnIndex >= AthmanList.length - 1) {
-      throw new Error("Invalid thumn selection");
+  useEffect(() => {
+    const fetchQuarters = async () => {
+      try {
+        setQuartersLoading(true);
+        const quartersList = [];
+        
+        // لدينا 60 حزب × 8 أثمان = 480 ثمن
+        for (let hizbNumber = 1; hizbNumber <= 60; hizbNumber++) {
+          for (let thumnNumber = 1; thumnNumber <= 8; thumnNumber++) {
+            const rubNumber = ((hizbNumber - 1) * 4) + Math.ceil(thumnNumber / 2);
+            quartersList.push({
+              id: ((hizbNumber - 1) * 8) + thumnNumber,
+              hizb_number: hizbNumber,
+              thumn_number: thumnNumber,
+              rub_number: rubNumber
+            });
+          }
+        }
+        
+        setQuarters(quartersList);
+        setQuartersError(null);
+      } catch (error) {
+        console.error("Error initializing quarters:", error);
+        setQuartersError("فشل تهيئة بيانات الأثمان. يرجى المحاولة مرة أخرى.");
+      } finally {
+        setQuartersLoading(false);
+      }
+    };
+  
+    fetchQuarters();
+  }, []);
+
+
+const getPageByVerseId = async (verseId: number): Promise<number> => {
+  try {
+    const response = await axios.get(
+      `https://api.quran.com/api/v4/verses/by_key/${verseId}?fields=page_number`
+    );
+    return response.data.verse.page_number;
+  } catch (error) {
+    console.error("Error fetching verse page:", error);
+    throw new Error("فشل في الحصول على رقم الصفحة");
+  }
+};
+
+
+const getThumnPages = async (hizb: number, thumn: number) => {
+  try {
+    // تحويل رقم الحزب والثمن إلى رقم ربع الحزب
+    const rubNumber = ((hizb - 1) * 4) + Math.ceil(thumn / 2);
+    // تحديد ما إذا كان الثمن هو الأول أو الثاني في الربع
+    const isSecondThumnInRub = thumn % 2 === 0;
+    
+    const response = await axios.get(
+      `https://api.quran.com/api/v4/verses/by_rub/${rubNumber}`,
+      {
+        params: {
+          fields: 'verse_key,page_number,text_uthmani'
+        }
+      }
+    );
+
+    if (!response.data || !response.data.verses || response.data.verses.length === 0) {
+      throw new Error(`لم يتم العثور على بيانات للثمن ${thumn} من الحزب ${hizb}`);
     }
-    const startPage = await getPageByVerseKey(AthmanList[thumnIndex].toString());
-    const endPage = await getPageByVerseKey((AthmanList[thumnIndex + 1] - 1).toString());
+
+    const verses = response.data.verses;
+    const middleIndex = Math.floor(verses.length / 2);
+    
+    // تقسيم آيات الربع إلى نصفين (ثمنين)
+    const thumnVerses = isSecondThumnInRub 
+      ? verses.slice(middleIndex) 
+      : verses.slice(0, middleIndex);
+
+    const startPage = thumnVerses[0].page_number;
+    const endPage = thumnVerses[thumnVerses.length - 1].page_number;
+
+    // تحديث الآيات مباشرة
+    setVerses(thumnVerses);
+
     return {
       hizb,
       thumn,
-      startPage: Math.max(1, Math.min(startPage, 604)),
-      endPage: Math.max(1, Math.min(endPage, 604)),
+      startPage,
+      endPage,
       currentPage: startPage,
     };
-  };
+  } catch (error) {
+    console.error("Error in getThumnPages:", error);
+    throw new Error("فشل في الحصول على صفحات الثمن");
+  }
+};
 
-  const handleRandomSelection = async (minHizb: number, maxHizb: number) => {
+const handleRandomSelection = async (minHizb: number, maxHizb: number) => {
     try {
+      // تأكد من اكتمال تحميل البيانات
+      if (quartersLoading || quarters.length === 0) {
+        throw new Error("يرجى الانتظار حتى يتم تحميل البيانات");
+      }
+
       setLoading(true);
-      const hizb = Math.floor(Math.random() * (maxHizb - minHizb + 1)) + minHizb;
-      const thumn = Math.floor(Math.random() * 8) + 1;
-      const range = await getThumnPages(hizb, thumn);
-      setRandomHizb(hizb);
-      setRandomThumn(thumn);
-      setThumnRange(range);
-      await fetchPageVerses(range.currentPage);
       setSelectedCategory(`${minHizb}-${maxHizb}`);
+
+      // اختيار حزب عشوائي من النطاق المحدد
+      const randomHizbNumber = Math.floor(Math.random() * (maxHizb - minHizb + 1)) + minHizb;
+      
+      // اختيار ثمن عشوائي (1-8)
+      const randomThumnNumber = Math.floor(Math.random() * 8) + 1;
+
+      setRandomHizb(randomHizbNumber);
+      setRandomThumn(randomThumnNumber);
+
+      // الحصول على صفحات الثمن
+      const range = await getThumnPages(randomHizbNumber, randomThumnNumber);
+      setThumnRange(range);
+
+      // تحميل الآيات للصفحة الأولى
+      if (range) {
+        await fetchPageVerses(range.startPage);
+      }
     } catch (error) {
       console.error("Error in selection:", error);
+      alert(error instanceof Error ? error.message : "حدث خطأ في اختيار الثمن. الرجاء المحاولة مرة أخرى.");
     } finally {
       setLoading(false);
     }
-  };
+};
 
-  const fetchPageVerses = async (page: number) => {
-    try {
-      setLoading(true);
+ const fetchPageVerses = async (page: number) => {
+  try {
+    setLoading(true);
+    // نستخدم الآيات التي تم تحميلها مسبقاً ونقوم بتصفيتها حسب رقم الصفحة
+    const pageVerses = verses.filter(verse => verse.page_number === page);
+    if (pageVerses.length === 0) {
+      // إذا لم نجد آيات للصفحة المطلوبة، نقوم بتحميلها
       const response = await axios.get(
-        `https://api.quran.com/api/v4/verses/by_page/${page}?fields=text_uthmani,page_number`
+        `https://api.quran.com/api/v4/verses/by_page/${page}`,
+        {
+          params: {
+            fields: 'text_uthmani,verse_key,page_number'
+          }
+        }
       );
-      setVerses(response.data.verses);
-    } catch (error) {
-      console.error("Error fetching verses:", error);
-    } finally {
-      setLoading(false);
+      setVerses(prevVerses => {
+        // دمج الآيات الجديدة مع الآيات الموجودة
+        const newVerses = response.data.verses.filter(
+          newVerse => !prevVerses.some(v => v.verse_key === newVerse.verse_key)
+        );
+        return [...prevVerses, ...newVerses];
+      });
     }
-  };
+  } catch (error) {
+    console.error("Error fetching verses:", error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   // Add the missing handlePageChange function
   const handlePageChange = async (newPage: number) => {
@@ -129,7 +244,18 @@ const HizbRandomSelector = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 text-right">
       <h2 className="text-3xl font-bold text-center mb-8">الاختيار العشوائي للقراءة</h2>
-      
+      {quartersLoading && (
+        <div className="text-center py-4">
+          <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-solid border-emerald-600 border-r-transparent"></div>
+          <p className="mt-2 text-gray-600">جاري تحميل بيانات الأثمان...</p>
+        </div>
+      )}
+
+      {quartersError && (
+        <div className="bg-red-100 p-4 rounded-lg mb-4 text-red-700">
+          {quartersError}
+        </div>
+      )}
       <div className="grid grid-cols-2 gap-4 mb-8">
         {categories.map((category) => (
           <button
@@ -225,6 +351,8 @@ const HizbRandomSelector = () => {
             setThumnRange(null);
             setRandomHizb(0);
             setRandomThumn(0);
+            setVerses([]);
+            setSelectedCategory("");
           }}
           disabled={loading}
           className={`px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 ${

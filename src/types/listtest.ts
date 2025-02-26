@@ -1,6 +1,9 @@
+interface AthmanSegment {
+  start_vers: number;
+  end_vers: number;
+}
 
-// ------------------ Athman (Eighths of a Hizb) Data ---------------------
-export const AthmanList:number[] = [
+export const AthmanList: number[] = [
   0, 1, 22, 39, 59, 75, 92, 110, 131, 149, 168, 186, 203, 221, 240, 259, 279,
   298, 316, 334, 352, 369, 387, 405, 424, 443, 462, 481, 500, 519, 538, 557,
   576, 596, 615, 634, 653, 672, 691, 710, 729, 748, 768, 787, 806, 825, 844,
@@ -27,3 +30,11 @@ export const AthmanList:number[] = [
   5823, 5842, 5861, 5880, 5899, 5918, 5937, 5956, 5975, 5994, 6013, 6032, 6051,
   6070, 6089, 6108, 6127, 6146, 6165, 6184, 6203, 6222, 6241
 ] as const;
+
+// نحسب المقاطع بحيث يكون لكل ثمن نقطة بداية ونهاية:
+const athmanSegments: AthmanSegment[] = AthmanList.slice(0, AthmanList.length - 1).map((start, index) => {
+  const end = AthmanList[index + 1] - 1;
+  return { start_vers: start, end_vers: end };
+});
+
+console.log(athmanSegments);

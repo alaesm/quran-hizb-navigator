@@ -18,8 +18,8 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
       {/* قائمة الروابط */}
       <nav className="mt-16 px-6 space-y-4">
         <a href="#" className="block p-3 bg-gray-700 rounded-lg hover:bg-gray-600">🏠 الرئيسية</a>
-        <a href="/quran" className="block p-3 bg-gray-700 rounded-lg hover:bg-gray-600">📖 المصحف</a>
-        <a href="/thumn-selector" className="block p-3 bg-gray-700 rounded-lg hover:bg-gray-600">🔍 اختيار عشوائي</a>
+        <a href="#hizb-display" className="block p-3 bg-gray-700 rounded-lg hover:bg-gray-600">📖 المصحف</a>
+        <a href="#hizb-random-selector" className="block p-3 bg-gray-700 rounded-lg hover:bg-gray-600">🔍 اختيار عشوائي</a>
         <a
           href="#"
           className="block p-3 bg-gray-700 rounded-lg hover:bg-gray-600"
