@@ -63,7 +63,7 @@ const HizbRandomSelector = () => {
         setQuartersLoading(true);
         const quartersList = [];
         
-        // لدينا 60 حزب × 8 أثمان = 480 ثمن
+      
         for (let hizbNumber = 1; hizbNumber <= 60; hizbNumber++) {
           for (let thumnNumber = 1; thumnNumber <= 8; thumnNumber++) {
             const rubNumber = ((hizbNumber - 1) * 4) + Math.ceil(thumnNumber / 2);
@@ -105,9 +105,9 @@ const getPageByVerseId = async (verseId: number): Promise<number> => {
 
 const getThumnPages = async (hizb: number, thumn: number) => {
   try {
-    // تحويل رقم الحزب والثمن إلى رقم ربع الحزب
+   
     const rubNumber = ((hizb - 1) * 4) + Math.ceil(thumn / 2);
-    // تحديد ما إذا كان الثمن هو الأول أو الثاني في الربع
+  
     const isSecondThumnInRub = thumn % 2 === 0;
     
     const response = await axios.get(
@@ -126,7 +126,7 @@ const getThumnPages = async (hizb: number, thumn: number) => {
     const verses = response.data.verses;
     const middleIndex = Math.floor(verses.length / 2);
     
-    // تقسيم آيات الربع إلى نصفين (ثمنين)
+    
     const thumnVerses = isSecondThumnInRub 
       ? verses.slice(middleIndex) 
       : verses.slice(0, middleIndex);
@@ -134,7 +134,7 @@ const getThumnPages = async (hizb: number, thumn: number) => {
     const startPage = thumnVerses[0].page_number;
     const endPage = thumnVerses[thumnVerses.length - 1].page_number;
 
-    // تحديث الآيات مباشرة
+    
     setVerses(thumnVerses);
 
     return {
@@ -152,7 +152,7 @@ const getThumnPages = async (hizb: number, thumn: number) => {
 
 const handleRandomSelection = async (minHizb: number, maxHizb: number) => {
     try {
-      // تأكد من اكتمال تحميل البيانات
+     
       if (quartersLoading || quarters.length === 0) {
         throw new Error("يرجى الانتظار حتى يتم تحميل البيانات");
       }
@@ -160,20 +160,19 @@ const handleRandomSelection = async (minHizb: number, maxHizb: number) => {
       setLoading(true);
       setSelectedCategory(`${minHizb}-${maxHizb}`);
 
-      // اختيار حزب عشوائي من النطاق المحدد
+   
       const randomHizbNumber = Math.floor(Math.random() * (maxHizb - minHizb + 1)) + minHizb;
       
-      // اختيار ثمن عشوائي (1-8)
       const randomThumnNumber = Math.floor(Math.random() * 8) + 1;
 
       setRandomHizb(randomHizbNumber);
       setRandomThumn(randomThumnNumber);
 
-      // الحصول على صفحات الثمن
+     
       const range = await getThumnPages(randomHizbNumber, randomThumnNumber);
       setThumnRange(range);
 
-      // تحميل الآيات للصفحة الأولى
+      
       if (range) {
         await fetchPageVerses(range.startPage);
       }
@@ -188,10 +187,10 @@ const handleRandomSelection = async (minHizb: number, maxHizb: number) => {
  const fetchPageVerses = async (page: number) => {
   try {
     setLoading(true);
-    // نستخدم الآيات التي تم تحميلها مسبقاً ونقوم بتصفيتها حسب رقم الصفحة
+    
     const pageVerses = verses.filter(verse => verse.page_number === page);
     if (pageVerses.length === 0) {
-      // إذا لم نجد آيات للصفحة المطلوبة، نقوم بتحميلها
+     
       const response = await axios.get(
         `https://api.quran.com/api/v4/verses/by_page/${page}`,
         {
@@ -201,7 +200,7 @@ const handleRandomSelection = async (minHizb: number, maxHizb: number) => {
         }
       );
       setVerses(prevVerses => {
-        // دمج الآيات الجديدة مع الآيات الموجودة
+     
         const newVerses = response.data.verses.filter(
           newVerse => !prevVerses.some(v => v.verse_key === newVerse.verse_key)
         );
@@ -215,11 +214,11 @@ const handleRandomSelection = async (minHizb: number, maxHizb: number) => {
   }
 };
 
-  // Add the missing handlePageChange function
+
   const handlePageChange = async (newPage: number) => {
     if (!thumnRange) return;
     
-    // Ensure page is within valid range
+ 
     if (newPage < thumnRange.startPage || newPage > thumnRange.endPage) {
       return;
     }
