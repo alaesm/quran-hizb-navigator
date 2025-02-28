@@ -6,6 +6,7 @@ import HizbRandomTest from './HizbRandomTest';
 import Mushaf from './MushafViewer';
 import FlipBook from './FlipBook';
 import { ThumnSelector } from './ThumnSelector';
+import QuranNavigator from './QuranNavigator';
 
 export const metadata: Metadata = {
   title: 'منصة مسار الأثمان: اختيار عشوائي لأثمان القرآن برواية ورش عن نافع من طريق الأزرق',
@@ -30,6 +31,7 @@ export default function Home() {
       <FlipBook/>
      {/*  <HizbDisplayZaky hizbNumber={1}/> */}
      {/*  <HizbRandomSelector/> */}
+     
        <ThumnSelector/>
       {/*<HizbRandomTest/>*/}
     </main>

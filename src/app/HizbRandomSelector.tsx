@@ -3,6 +3,26 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { AthmanList } from "@/types/listtest";
+import { getPageMeta } from "quran-meta";
+
+const totalPages = 604;
+const athmanIndex = [];
+
+for (let page = 1; page <= totalPages; page++) {
+  // نفترض أن المكتبة تدعم اختيار رواية "ورش" ونمط "الأزرق"
+  const pageData = getPageMeta(page, { recitation: "warsh", mushaf: "azraq" });
+  athmanIndex.push({
+    الصفحة: page,
+    السورة: pageData.surah,     
+    الآية: pageData.ayah,       
+    الجزئية: pageData.juz,     
+    الحزب: pageData.hizb,       
+    المقرة: pageData.maqra        
+  });
+}
+
+console.table(athmanIndex);
+
 
 interface Verse {
   id: number;

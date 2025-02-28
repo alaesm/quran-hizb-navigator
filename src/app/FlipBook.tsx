@@ -8,26 +8,26 @@ const images = Array.from({ length: 604 }, (_, i) =>
 );
 
 const hizbData = [
-    { hizb: 1, startPage: 1 }, { hizb: 2, startPage: 11 }, { hizb: 3, startPage: 21 }, 
-    { hizb: 4, startPage: 31 }, { hizb: 5, startPage: 41 }, { hizb: 6, startPage: 51 }, 
-    { hizb: 7, startPage: 61 }, { hizb: 8, startPage: 71 }, { hizb: 9, startPage: 81 }, 
-    { hizb: 10, startPage: 91 }, { hizb: 11, startPage: 101 }, { hizb: 12, startPage: 111 }, 
-    { hizb: 13, startPage: 121 }, { hizb: 14, startPage: 131 }, { hizb: 15, startPage: 141 }, 
-    { hizb: 16, startPage: 151 }, { hizb: 17, startPage: 161 }, { hizb: 18, startPage: 171 }, 
-    { hizb: 19, startPage: 181 }, { hizb: 20, startPage: 191 }, { hizb: 21, startPage: 201 }, 
-    { hizb: 22, startPage: 212 }, { hizb: 23, startPage: 221 }, { hizb: 24, startPage: 231 }, 
-    { hizb: 25, startPage: 241 }, { hizb: 26, startPage: 251 }, { hizb: 27, startPage: 261 }, 
-    { hizb: 28, startPage: 271 }, { hizb: 29, startPage: 281 }, { hizb: 30, startPage: 291 }, 
-    { hizb: 31, startPage: 301 }, { hizb: 32, startPage: 311 }, { hizb: 33, startPage: 321 }, 
-    { hizb: 34, startPage: 331 }, { hizb: 35, startPage: 341 }, { hizb: 36, startPage: 351 }, 
-    { hizb: 37, startPage: 361 }, { hizb: 38, startPage: 371 }, { hizb: 39, startPage: 381 }, 
-    { hizb: 40, startPage: 391 }, { hizb: 41, startPage: 401 }, { hizb: 42, startPage: 411 }, 
-    { hizb: 43, startPage: 421 }, { hizb: 44, startPage: 431 }, { hizb: 45, startPage: 441 }, 
-    { hizb: 46, startPage: 451 }, { hizb: 47, startPage: 461 }, { hizb: 48, startPage: 471 }, 
-    { hizb: 49, startPage: 481 }, { hizb: 50, startPage: 491 }, { hizb: 51, startPage: 501 }, 
-    { hizb: 52, startPage: 511 }, { hizb: 53, startPage: 521 }, { hizb: 54, startPage: 531 }, 
-    { hizb: 55, startPage: 541 }, { hizb: 56, startPage: 551 }, { hizb: 57, startPage: 561 }, 
-    { hizb: 58, startPage: 571 }, { hizb: 59, startPage: 581 }, { hizb: 60, startPage: 591 }
+    { hizb: 1, startPage: 1 }, { hizb: 2, startPage: 11 }, { hizb: 3, startPage: 22 }, 
+    { hizb: 4, startPage: 32 }, { hizb: 5, startPage: 42 }, { hizb: 6, startPage: 51 }, 
+    { hizb: 7, startPage: 62 }, { hizb: 8, startPage: 71 }, { hizb: 9, startPage: 82 }, 
+    { hizb: 10, startPage: 92 }, { hizb: 11, startPage: 102 }, { hizb: 12, startPage: 111 }, 
+    { hizb: 13, startPage: 121 }, { hizb: 14, startPage: 132 }, { hizb: 15, startPage: 142 }, 
+    { hizb: 16, startPage: 151 }, { hizb: 17, startPage: 162 }, { hizb: 18, startPage: 173 }, 
+    { hizb: 19, startPage: 182 }, { hizb: 20, startPage: 192 }, { hizb: 21, startPage: 201 }, 
+    { hizb: 22, startPage: 212 }, { hizb: 23, startPage: 222 }, { hizb: 24, startPage: 231 }, 
+    { hizb: 25, startPage: 242 }, { hizb: 26, startPage: 252 }, { hizb: 27, startPage: 262 }, 
+    { hizb: 28, startPage: 272 }, { hizb: 29, startPage: 282 }, { hizb: 30, startPage: 292 }, 
+    { hizb: 31, startPage: 302 }, { hizb: 32, startPage: 312 }, { hizb: 33, startPage: 322 }, 
+    { hizb: 34, startPage: 332 }, { hizb: 35, startPage: 342 }, { hizb: 36, startPage: 352 }, 
+    { hizb: 37, startPage: 362 }, { hizb: 38, startPage: 371 }, { hizb: 39, startPage: 382 }, 
+    { hizb: 40, startPage: 392 }, { hizb: 41, startPage: 402 }, { hizb: 42, startPage: 413 }, 
+    { hizb: 43, startPage: 422 }, { hizb: 44, startPage: 431 }, { hizb: 45, startPage: 442 }, 
+    { hizb: 46, startPage: 451 }, { hizb: 47, startPage: 462 }, { hizb: 48, startPage: 472 }, 
+    { hizb: 49, startPage: 482 }, { hizb: 50, startPage: 491 }, { hizb: 51, startPage: 502 }, 
+    { hizb: 52, startPage: 513 }, { hizb: 53, startPage: 522 }, { hizb: 54, startPage: 531 }, 
+    { hizb: 55, startPage: 542 }, { hizb: 56, startPage: 553 }, { hizb: 57, startPage: 562 }, 
+    { hizb: 58, startPage: 572 }, { hizb: 59, startPage: 582 }, { hizb: 60, startPage: 591 }
   ];
   
   const FlipBook = () => {
@@ -38,6 +38,9 @@ const hizbData = [
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [loadedImagesCount, setLoadedImagesCount] = useState(0);
+    const [totalPages, setTotalPages] = useState(images.length);
+    const reversedImages = [...images].reverse();
+  
 
     useEffect(() => {
         images.forEach((imgSrc) => {
@@ -55,24 +58,41 @@ const hizbData = [
         }
       }, [loadedImagesCount]);
   
-    
+     useEffect(() => {
+    if (loadedImagesCount === images.length) {
+      setIsLoading(false);
+    }
+  }, [loadedImagesCount]);
+
     // تنقل بين الصفحات
-    const goToPrevPage = () => flipBookRef.current?.pageFlip().flipPrev();
-    const goToNextPage  = () => flipBookRef.current?.pageFlip().flipNext();
+    // const goToPrevPage = () => flipBookRef.current?.pageFlip().flipPrev();
+    // const goToNextPage  = () => flipBookRef.current?.pageFlip().flipNext();
+    const goToPrevPage = () => flipBookRef.current?.pageFlip().flipNext();
+    const goToNextPage = () => flipBookRef.current?.pageFlip().flipPrev();
   
     // الانتقال لصفحة محددة
+    // const goToPage = (page: number) => {
+    //   if (page >= 1 && page <= images.length) {
+    //     setPageNumber(page);
+    //     flipBookRef.current?.pageFlip().flip(page - 1);
+    //   }
+    // };
+
     const goToPage = (page: number) => {
-      if (page >= 1 && page <= images.length) {
+      if (page >= 1 && page <= totalPages) {
         setPageNumber(page);
-        flipBookRef.current?.pageFlip().flip(page - 1);
+       
+        const flipToIndex = totalPages - page;
+        flipBookRef.current?.pageFlip().flip(flipToIndex);
       }
     };
   
-    // الانتقال لبداية الحزب
+   
     const goToHizb = (hizbNumber: number) => {
       const hizb = hizbData.find(h => h.hizb === hizbNumber);
       if (hizb) {
         setSelectedHizb(hizbNumber);
+        setPageNumber(hizb.startPage);
         goToPage(hizb.startPage);
        
       }
@@ -88,9 +108,13 @@ const hizbData = [
         setIsFullScreen(false);
       }
     };
-  
+
+    const handlePageFlip = (e: any) => {
+      const currentPage = totalPages - e.data + 1;
+      setPageNumber(currentPage);
+    };
     return (
-      <div ref={containerRef} className="flex flex-col items-center p-4 bg-gray-100 min-h-screen">
+      <div ref={containerRef} dir="rtl" className="flex flex-col items-center p-4 bg-gray-100 min-h-screen">
          {isLoading && (
         <div className="fixed inset-0 bg-white bg-opacity-90 flex justify-center items-center z-50">
           <div className="text-center">
@@ -105,7 +129,43 @@ const hizbData = [
         </div>
       )}
 
+
+<div className="flipbook-container" style={{ direction: "rtl" }}>
         <HTMLFlipBook
+          ref={flipBookRef}
+          width={600}
+          height={800}
+          className="quran-flipbook shadow-lg"
+          showCover={true}
+          startPage={images.length-1}
+          direction="rtl"
+          onFlip={handlePageFlip}
+          flippingTime={500}
+          usePortrait={false}
+          maxShadowOpacity={0.5}
+        >
+          {reversedImages.map((image, index) => {
+            // Calculate the actual page number (reversed)
+            const actualPageNumber = totalPages - index;
+            
+            return (
+              <div 
+                key={index} 
+                className="quran-page bg-cream" 
+                data-page-number={actualPageNumber}
+              >
+                <img 
+                  src={image} 
+                  alt={`صفحة ${actualPageNumber}`} 
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            );
+          })}
+        </HTMLFlipBook>
+      </div>
+
+        {/* <HTMLFlipBook
           ref={flipBookRef}
           width={600}
           height={800}
@@ -128,7 +188,7 @@ const hizbData = [
               />
             </div>
           ))}
-        </HTMLFlipBook>
+        </HTMLFlipBook> */}
   
         {/* لوحة التحكم */}
         <div className="control-panel mt-6 w-full max-w-2xl bg-white p-4 rounded-lg shadow-md">

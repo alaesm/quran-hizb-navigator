@@ -7,6 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  getEighthStartPage,
+  getQuarterPages,
+} from "@/types/quran_hizb_pages";
+
 import Image from "next/image";
 
 export const ThumnSelector = () => {
@@ -36,7 +41,9 @@ export const ThumnSelector = () => {
       const [start, end] = selectedHizbRange;
       const randomHizb = Math.floor(Math.random() * (end - start + 1)) + start;
       const randomThumn = Math.floor(Math.random() * 8) + 1;
-      setCurrentThumn((randomHizb - 1) * 8 + randomThumn);
+      const thumnNumber = (randomHizb - 1) * 8 + randomThumn;
+
+      setCurrentThumn(thumnNumber);
       setIsLoading(false);
     }, 700);
   }, [selectedHizbRange]);
@@ -53,9 +60,15 @@ export const ThumnSelector = () => {
     }
   }, [currentThumn]);
 
-
   const getThumnImageName = (thumnNumber: number) => {
     return thumnNumber.toString().padStart(3, "0"); // تحويل الرقم إلى تنسيق 3 أرقام
+  };
+
+  const getQuarterAndEighthStartPages = (thumnNumber: number): number => {
+    // هنا ضع المنطق الخاص بإرجاع رقم الصفحة بناءً على رقم الثمن
+    const hizb = Math.ceil(thumnNumber / 8); // تحديد رقم الحزب
+    const eighth = thumnNumber % 8 || 8; // تحديد رقم الثمن داخل الحزب
+    return hizb * 20 + eighth; // مثال على خوارزمية حساب رقم الصفحة
   };
 
   return (
@@ -127,7 +140,7 @@ export const ThumnSelector = () => {
                 <Book className="h-4 w-4 ml-2" /> عرض آيات الثمن
               </Button>
 
-             <Button
+              <Button
                 className="mt-4 ml-2 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg transition duration-300"
                 onClick={handleViewTajweed}
               >
@@ -136,7 +149,9 @@ export const ThumnSelector = () => {
               {showThumnImage && (
                 <div className="mt-6 flex justify-center items-center">
                   <Image
-                    src={`/thumns/thumn-${getThumnImageName(currentThumn + 1)}.png`}
+                    src={`/thumns/thumn-${getThumnImageName(
+                      currentThumn + 1
+                    )}.png`}
                     alt={`ثمن ${currentThumn}`}
                     width={500}
                     height={400}
@@ -146,15 +161,19 @@ export const ThumnSelector = () => {
                 </div>
               )}
               {showTajweedImage && (
-                <div className="mt-6 flex justify-center items-center">
-                  <Image
-                    src={`/images/__02.01.05.Masahif-Qira'at-Nafe_removed-${getThumnImageName(currentThumn)}.jpg`}
-                    alt={`صفحة التجويد للثمن ${currentThumn}`}
-                    width={500}
-                    height={400}
-                    className="rounded-lg shadow-lg border border-gray-300"
-                    priority
-                  />
+                <div className="mt-6 flex flex-wrap justify-center items-center gap-4">
+                  {getQuarterPages(
+                   Math.ceil(currentThumn / 8),(currentThumn % 8 || 8) )?.pages.map((page) => (
+                    <Image
+                      key={page}
+                      src={`/images/__02.01.05.Masahif-Qira'at-Nafe_removed-${page}.jpg`}
+                      alt={`صفحة التجويد للصفحة ${page}`}
+                      width={500}
+                      height={400}
+                      className="rounded-lg shadow-lg border border-gray-300"
+                      priority
+                    />
+                  ))}
                 </div>
               )}
             </div>
