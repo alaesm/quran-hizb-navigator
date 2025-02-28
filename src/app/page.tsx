@@ -3,6 +3,9 @@ import { Metadata } from 'next';
 import HizbDisplayZaky from './HizbSelectorZaky';
 import HizbRandomSelector from './HizbRandomSelector';
 import HizbRandomTest from './HizbRandomTest';
+import Mushaf from './MushafViewer';
+import FlipBook from './FlipBook';
+import { ThumnSelector } from './ThumnSelector';
 
 export const metadata: Metadata = {
   title: 'منصة مسار الأثمان: اختيار عشوائي لأثمان القرآن برواية ورش عن نافع من طريق الأزرق',
@@ -24,9 +27,11 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main className=''>
-       <HizbDisplayZaky hizbNumber={1}/> 
-      {/* <HizbRandomSelector/> */}
-      <HizbRandomTest/>
+      <FlipBook/>
+     {/*  <HizbDisplayZaky hizbNumber={1}/> */}
+     {/*  <HizbRandomSelector/> */}
+       <ThumnSelector/>
+      {/*<HizbRandomTest/>*/}
     </main>
   )
 }

@@ -1,0 +1,95 @@
+
+{
+    "hizbs": [
+      {
+        "hizb_number": 1,
+        "athman": [
+          {
+            "athman_number": 1,
+            "start_verse": "1:1",
+            "end_verse": "2:16"
+          },
+          {
+            "athman_number": 2,
+            "start_verse": "2:17",
+            "end_verse": "2:25"
+          },
+          {
+            "athman_number": 3,
+            "start_verse": "2:26",
+            "end_verse": "2:33"
+          },
+          {
+            "athman_number": 1,
+            "start_verse": "2:34",
+            "end_verse": "2:41"
+          },
+          {
+            "athman_number": 4,
+            "start_verse": "2:42",
+            "end_verse": "2:53"
+          },
+          {
+            "athman_number": 5,
+            "start_verse": "2:54",
+            "end_verse": "2:59"
+          },
+          {
+            "athman_number": 6,
+            "start_verse": "2:60",
+            "end_verse": "2:66"
+          },
+          {
+            "athman_number": 7,
+            "start_verse": "2:67",
+            "end_verse": "2:75"
+          },
+          {
+            "athman_number": 8,
+            "start_verse": "2:76",
+            "end_verse": ""
+          }
+        ]
+      },
+      {
+        "hizb_number": 2,
+        "athman": [
+          {
+            "athman_number": 1,
+            "start_verse": "",
+            "end_verse": ""
+          },
+          {
+            "athman_number": 2,
+            "start_verse": "",
+            "end_verse": ""
+          },
+          {
+            "athman_number": 3,
+            "start_verse": "",
+            "end_verse": ""
+          },
+          {
+            "athman_number": 4,
+            "start_verse": "",
+            "end_verse": ""
+          }
+        ]
+      },
+      {
+        "hizb_number": 44,
+        "athman": [
+          {
+            "athman_number": 1,
+            "start_verse": "",
+            "end_verse": ""
+          },
+          {
+            "athman_number": 2,
+            "start_verse": "",
+            "end_verse": ""
+          }
+        ]
+      }
+    ]
+}

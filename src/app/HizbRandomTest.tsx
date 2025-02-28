@@ -85,7 +85,6 @@ const HizbRandomTest = () => {
     fetchQuarters();
   }, []);
 
-  // Fetch Surah names once on component mount
   useEffect(() => {
     const fetchSuraNames = async () => {
       try {
