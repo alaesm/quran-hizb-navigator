@@ -4,7 +4,7 @@ import HizbDisplayZaky from './HizbSelectorZaky';
 import HizbRandomSelector from './HizbRandomSelector';
 import HizbRandomTest from './HizbRandomTest';
 import Mushaf from './MushafViewer';
-import FlipBook from './FlipBook';
+import FlipBook from './FlipBookTest';
 import { ThumnSelector } from './ThumnSelector';
 import QuranNavigator from './QuranNavigator';
 

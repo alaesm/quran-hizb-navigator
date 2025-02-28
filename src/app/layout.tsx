@@ -39,17 +39,21 @@ export default function RootLayout({
       >
         {/* تصميم الصفحة متناسق مع الشعار */}
         <main className="relative max-w-4xl mb-4   flex flex-col items-center text-center">
-          <img
-            src="/logo.png"
-            alt="شعار الجمعية"
-            className="absolute  right-4 w-40 h-40"
-          />
-          <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-300 mt-12">
-            مرحبا بك في منصة مسار الأثمان
-          </h1>
-          <p className="text-lg text-gray-700 dark:text-gray-300 mt-2">
-            اختر واستمع إلى الأثمان بسهولة مع ميزات البحث والتفاعل
-          </p>
+        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center gap-3 min-h-[70px]">
+              <img
+                src="/logo.png"
+                alt="شعار الجمعية"
+                className="w-16 h-16 object-contain rounded-lg border border-gray-200 dark:border-gray-600"
+              />
+              <div className="flex-1">
+                <h1 className="text-lg font-semibold text-gray-800 dark:text-gray-100 leading-tight">
+                  منصة مسار الأثمان
+                </h1>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5 leading-relaxed">
+                  اختيار عشوائي لأثمان القرآن برواية ورش عن نافع
+                </p>
+              </div>
+            </div>
          
         </main>
 
