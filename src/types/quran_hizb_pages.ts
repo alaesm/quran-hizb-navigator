@@ -1,5 +1,5 @@
 
-const hizbData = [
+export const hizbData = [
     { hizb: 1, startPage: 1 }, { hizb: 2, startPage: 11 }, { hizb: 3, startPage: 22 }, 
     { hizb: 4, startPage: 32 }, { hizb: 5, startPage: 42 }, { hizb: 6, startPage: 51 }, 
     { hizb: 7, startPage: 62 }, { hizb: 8, startPage: 71 }, { hizb: 9, startPage: 82 }, 
@@ -71,9 +71,9 @@ export function getQuarterPages(hizbNumber, eighthNumber) {
     // تحديد الربع الذي يحتوي على الثمن المحدد
     const quarterIndex = Math.floor((eighthNumber - 1) / 2);
     const quarterStartPage = quarterPages[quarterIndex];
-    const quarterEndPage = quarterPages[quarterIndex + 1] - 1; // آخر صفحة في الربع
+    const quarterEndPage = quarterPages[quarterIndex + 1] ; 
 
-    // إنشاء مصفوفة تحتوي على جميع الصفحات من بداية الربع إلى نهايته
+  
     const pages = [];
     for (let i = quarterStartPage; i <= quarterEndPage; i++) {
         pages.push(i);

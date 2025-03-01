@@ -1,8 +1,10 @@
+import Page from "@/app/page"; 
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
-import HeaderWithSidebar from "@/components/ui/HeaderWithSidebar";
+
+import Sidebar from "@/components/Sidebar";
 
 const cairo = Cairo({ subsets: ["latin"] });
 
@@ -37,15 +39,21 @@ export default function RootLayout({
       <body
         className={`text-right bg-gray-100 dark:bg-gray-900 ${cairo.className} antialiased`}
       >
-        {/* تصميم الصفحة متناسق مع الشعار */}
-        <main className="relative max-w-4xl mb-4   flex flex-col items-center text-center">
-        <div className="max-w-4xl mx-auto px-4 py-3 flex items-center gap-3 min-h-[70px]">
+        <div className="flex min-h-screen">
+          {/* الشريط الجانبي */}
+          
+          <div className="flex-1 flex flex-col">
+            {/* الهيدر مع الشعار */}
+           
+            <header className="bg-white dark:bg-gray-800 shadow-md py-3 px-4 flex items-center gap-4">
+             
+           
               <img
                 src="/logo.png"
                 alt="شعار الجمعية"
                 className="w-16 h-16 object-contain rounded-lg border border-gray-200 dark:border-gray-600"
               />
-              <div className="flex-1">
+              <div>
                 <h1 className="text-lg font-semibold text-gray-800 dark:text-gray-100 leading-tight">
                   منصة مسار الأثمان
                 </h1>
@@ -53,9 +61,17 @@ export default function RootLayout({
                   اختيار عشوائي لأثمان القرآن برواية ورش عن نافع
                 </p>
               </div>
-            </div>
-         
-        </main>
+
+              <div className="flex-col justify-end"  >
+                <Sidebar/>
+              </div>
+             
+             
+            </header>
+            {/* المحتوى */}
+            <main className="p-6 flex-1">{children}</main>
+          </div>
+        </div>
 
         <ThemeProvider
           attribute="class"
